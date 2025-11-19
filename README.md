@@ -133,7 +133,3 @@ nix run github:yourusername/blender-claude-mcp
 - [Blender MCP](https://github.com/ahujasid/blender-mcp) - Siddharth Ahuja
 - [Claude Desktop Linux Flake](https://github.com/k3d3/claude-desktop-linux-flake) - k3d3
 - [Anthropic](https://www.anthropic.com/) - Claude AI
-
-## License
-
-MIT License.
