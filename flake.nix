@@ -103,9 +103,9 @@
         launchEnvironment = pkgs.writeShellScriptBin "blender-claude" ''
           #!/usr/bin/env bash
 
-          echo "╔════════════════════════════════╗"
-          echo "║      Blender + Claude MCP      ║"
-          echo "╚════════════════════════════════╝"
+          echo "╔════════════════════════════╗"
+          echo "║      Blender + Claude      ║"
+          echo "╚════════════════════════════╝"
           echo ""
 
           # Check if blender is available (Flatpak or system)
@@ -140,7 +140,7 @@
           echo ""
           echo "Quick start:"
           echo "  1. Run 'claude-desktop' in devshell"
-          echo "  2. Run 'blender' in another terminal"
+          echo "  2. Launch Blender
           echo "  3. In Blender, enable the addon and connect to Claude"
         '';
 
@@ -168,9 +168,9 @@
           ];
 
           shellHook = ''
-            echo "╔════════════════════════════════╗"
-            echo "║      Blender + Claude MCP      ║"
-            echo "╚════════════════════════════════╝"
+            echo "╔════════════════════════════╗"
+            echo "║      Blender + Claude      ║"
+            echo "╚════════════════════════════╝"
             echo ""
             echo "Environment loaded!"
             echo ""

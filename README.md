@@ -1,8 +1,8 @@
-# Blender + Claude MCP Integration
+# Blender + Claude
 
 Control Blender with natural language through Claude AI using the Model Context Protocol (MCP).
 
-## What This Does
+## What this Flake does
 
 Integrates Claude Desktop with Blender so you can:
 - Create and modify 3D objects by talking to Claude
@@ -24,10 +24,10 @@ nix develop
 setup-claude-config
 setup-blender-addon
 
-# 3. Launch Claude Desktop (terminal 1)
+# 3. Launch Claude Desktop (in devshell)
 claude-desktop
 
-# 4. Launch Blender (terminal 2)
+# 4. Launch Blender (another terminal)
 blender
 ```
 
@@ -37,12 +37,7 @@ blender
 2. Search for **"Blender MCP"** and enable it
 3. Press **N** to open the sidebar
 4. Click **BlenderMCP** tab → **Connect to Claude**
-
-### In Claude Desktop
-
-Look for the 🔨 hammer icon - MCP tools are ready!
-
-Try: *"Create a red cube at the origin"* or *"Add studio lighting"*
+5. Claude should be connected, try prompting.
 
 ## Supported Installations
 
@@ -56,7 +51,6 @@ This flake automatically detects:
 |---------|-------------|
 | `setup-claude-config` | Configure Claude Desktop MCP |
 | `setup-blender-addon` | Install Blender addon |
-| `blender` | Launch Blender (auto-detects Flatpak/system) |
 | `claude-desktop` | Launch Claude Desktop |
 
 ## Configuration Paths
@@ -98,7 +92,7 @@ cat ~/.config/Claude/claude_desktop_config.json | jq
 setup-claude-config
 ```
 
-## Advanced Usage
+## Other
 
 ### One-time run
 ```bash
@@ -123,10 +117,9 @@ nix run github:yourusername/blender-claude-mcp
 - **Claude Desktop** (with FHS environment for MCP)
 - **UV** (Python package manager for MCP server)
 - **Python 3.11** (Blender scripting)
-- **Setup automation scripts**
 - **Blender MCP addon** (downloaded from upstream)
 
-**Note:** Blender itself is NOT installed - uses your existing installation.
+**Note:** Blender itself is NOT installed - uses your existing installation!
 
 ## How It Works
 
