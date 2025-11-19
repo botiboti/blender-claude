@@ -1,5 +1,5 @@
 {
-  description = "Blender with Claude MCP integration";
+  description = "Claude MCP and Claude Desktop for Blender";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -19,22 +19,6 @@
           inherit system;
           config.allowUnfree = true;
         };
-
-        # Wrapper for Blender - detects if it's Flatpak or system installation
-        blenderWrapper = pkgs.writeShellScriptBin "blender" ''
-          #!/usr/bin/env bash
-
-          # Check if Blender is installed via Flatpak
-          if ${pkgs.flatpak}/bin/flatpak list 2>/dev/null | grep -q org.blender.Blender; then
-            exec ${pkgs.flatpak}/bin/flatpak run org.blender.Blender "$@"
-          elif command -v /usr/bin/blender &> /dev/null; then
-            exec /usr/bin/blender "$@"
-          else
-            echo "Error: Blender not found"
-            echo "Please install Blender via Flatpak or system package manager"
-            exit 1
-          fi
-        '';
 
         # Script to download and setup the Blender MCP addon
         setupAddon = pkgs.writeShellScriptBin "setup-blender-addon" ''
@@ -72,12 +56,13 @@
           echo "✓ Addon downloaded to: $SCRIPTS_DIR/blender_mcp_addon.py"
           echo ""
           echo "Next steps:"
-          echo "1. Run 'blender' to start Blender"
-          echo "2. Go to Edit > Preferences > Add-ons"
-          echo "3. Search for 'Blender MCP' (should be auto-detected)"
-          echo "4. Enable the addon by checking the box"
-          echo "5. Press N in the 3D view to show the sidebar"
-          echo "6. Find the 'BlenderMCP' tab and click 'Connect to Claude'"
+          echo "1. Run 'claude-desktop', and ensure it is connected to your Claude account"
+          echo "2. Launch Blender"
+          echo "3. Go to Edit > Preferences > Add-ons"
+          echo "4. Search for 'Blender MCP' (should be auto-detected)"
+          echo "5. Enable the addon by checking the box"
+          echo "6. Press N in the 3D view to show the sidebar"
+          echo "7. Find the 'BlenderMCP' tab and click 'Connect to Claude'"
         '';
 
         # Script to setup Claude Desktop config
@@ -115,7 +100,6 @@
           echo "Configuration complete!"
         '';
 
-        # Wrapper script to launch the complete environment
         launchEnvironment = pkgs.writeShellScriptBin "blender-claude" ''
           #!/usr/bin/env bash
 
@@ -150,13 +134,12 @@
           fi
 
           echo "Available commands:"
-          echo "  blender              - Launch Blender (Flatpak or system)"
           echo "  claude-desktop       - Launch Claude Desktop"
           echo "  setup-blender-addon  - Setup/reinstall Blender addon"
           echo "  setup-claude-config  - Setup/update Claude config"
           echo ""
           echo "Quick start:"
-          echo "  1. Run 'claude-desktop' in one terminal"
+          echo "  1. Run 'claude-desktop' in devshell"
           echo "  2. Run 'blender' in another terminal"
           echo "  3. In Blender, enable the addon and connect to Claude"
         '';
@@ -172,23 +155,13 @@
 
         devShells.default = pkgs.mkShell {
           buildInputs = [
-            # Core applications
             claude-desktop.packages.${system}.claude-desktop-with-fhs
-            blenderWrapper
-
-            # Python for Blender scripting
             pkgs.python311
             pkgs.python311Packages.pip
-
-            # UV package manager for MCP server
             pkgs.uv
-
-            # Utilities
             pkgs.curl
             pkgs.jq
             pkgs.flatpak
-
-            # Setup scripts
             setupAddon
             setupClaudeConfig
             launchEnvironment
@@ -202,7 +175,6 @@
             echo "Environment loaded!"
             echo ""
 
-            # Check if Blender is available
             if ${pkgs.flatpak}/bin/flatpak list 2>/dev/null | grep -q org.blender.Blender; then
               echo "✓ Blender detected (Flatpak): $(${pkgs.flatpak}/bin/flatpak run org.blender.Blender --version 2>/dev/null | head -1)"
             elif command -v blender &> /dev/null; then
@@ -218,14 +190,12 @@
             echo "  setup-blender-addon  - Download and setup Blender addon"
             echo ""
             echo "Launch commands:"
-            echo "  blender              - Start Blender (Flatpak or system)"
             echo "  claude-desktop       - Start Claude Desktop"
             echo ""
             echo "Quick setup (first time):"
             echo "  1. setup-claude-config"
             echo "  2. setup-blender-addon"
-            echo "  3. blender (launch blender then enable addon in preferences)"
-            echo "  4. claude-desktop (in )"
+            echo "  4. claude-desktop"
             echo ""
           '';
         };
@@ -234,16 +204,6 @@
           default = {
             type = "app";
             program = "${launchEnvironment}/bin/blender-claude";
-          };
-
-          blender = {
-            type = "app";
-            program = "${blenderWrapper}/bin/blender";
-          };
-
-          claude = {
-            type = "app";
-            program = "${claude-desktop.packages.${system}.claude-desktop-with-fhs}/bin/claude-desktop";
           };
         };
       }

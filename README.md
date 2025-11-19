@@ -13,7 +13,6 @@ Integrates Claude Desktop with Blender so you can:
 
 - **Blender** installed (Flatpak or system package)
 - **Nix** with flakes enabled
-- Internet connection
 
 ## Quick Start
 
@@ -88,7 +87,7 @@ setup-blender-addon
 ### Connection failed
 1. Restart Claude Desktop
 2. In Blender: Click **"Connect to Claude"** again
-3. Check for 🔨 icon in Claude Desktop
+3. Check for the connection in Claude Desktop settings
 
 ### Claude Desktop won't start
 ```bash
@@ -97,19 +96,6 @@ cat ~/.config/Claude/claude_desktop_config.json | jq
 
 # Regenerate
 setup-claude-config
-```
-
-## Example Commands
-
-Once connected, try asking Claude:
-
-```
-"Create a red metallic cube"
-"Add a blue sphere 2 units above the cube"
-"Create a camera looking at the scene"
-"Add three-point lighting"
-"Make a low-poly mountain landscape"
-"Apply a glass material to all spheres"
 ```
 
 ## Advanced Usage
@@ -157,7 +143,4 @@ nix run github:yourusername/blender-claude-mcp
 
 ## License
 
-MIT License. Note:
-- Blender: GPL
-- Claude Desktop: Anthropic Consumer Terms
-- Blender MCP addon: See upstream repository
+MIT License.
